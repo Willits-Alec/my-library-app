@@ -5,7 +5,7 @@
       "title": "Library API",
       "description": "API for a library application"
     },
-    "host": "localhost:3000",
+    "host": "https://my-library-app-hrg3.onrender.com",
     "basePath": "/api",
     "schemes": ["http"],
     "paths": {
