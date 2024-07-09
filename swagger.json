@@ -1,140 +1,179 @@
 {
-    "swagger": "2.0",
-    "info": {
-      "version": "1.0.0",
-      "title": "Library API",
-      "description": "API for a library application"
-    },
-    "host": "my-library-app-hrg3.onrender.com",
-    "basePath": "/api",
-    "schemes": ["https"],
-    "paths": {
-      "/books": {
-        "get": {
-          "summary": "Get all books",
-          "responses": {
-            "200": {
-              "description": "Successful response",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/Book"
-                }
-              }
-            }
-          }
-        },
-        "post": {
-          "summary": "Create a new book",
-          "parameters": [
-            {
-              "in": "body",
-              "name": "book",
-              "schema": {
-                "$ref": "#/definitions/Book"
-              }
-            }
-          ],
-          "responses": {
-            "201": {
-              "description": "Book created"
-            }
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Library API",
+    "description": "Library API documentation"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/books": {
+      "get": {
+        "summary": "Get all books",
+        "tags": ["Books"],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       },
-      "/books/{id}": {
-        "get": {
-          "summary": "Get a book by ID",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful response",
-              "schema": {
-                "$ref": "#/definitions/Book"
-              }
-            },
-            "404": {
-              "description": "Book not found"
-            }
-          }
-        },
-        "put": {
-          "summary": "Update a book",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "type": "string"
-            },
-            {
-              "in": "body",
-              "name": "book",
-              "schema": {
-                "$ref": "#/definitions/Book"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Book updated"
-            },
-            "404": {
-              "description": "Book not found"
-            }
-          }
-        },
-        "delete": {
-          "summary": "Delete a book",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Book deleted"
-            },
-            "404": {
-              "description": "Book not found"
-            }
+      "post": {
+        "summary": "Create a new book",
+        "tags": ["Books"],
+        "responses": {
+          "201": {
+            "description": "Created"
           }
         }
       }
     },
-    "definitions": {
-      "Book": {
-        "type": "object",
-        "required": ["title", "author", "publishedDate", "pages", "genre"],
-        "properties": {
-          "title": {
+    "/api/books/{id}": {
+      "get": {
+        "summary": "Get book by ID",
+        "tags": ["Books"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
-          "author": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update book by ID",
+        "tags": ["Books"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
-          "publishedDate": {
-            "type": "string",
-            "format": "date"
-          },
-          "pages": {
-            "type": "integer"
-          },
-          "genre": {
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete book by ID",
+        "tags": ["Books"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/movies": {
+      "get": {
+        "summary": "Get all movies",
+        "tags": ["Movies"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new movie",
+        "tags": ["Movies"],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/api/movies/{id}": {
+      "get": {
+        "summary": "Get movie by ID",
+        "tags": ["Movies"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update movie by ID",
+        "tags": ["Movies"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete movie by ID",
+        "tags": ["Movies"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
     }
   }
-  
+}

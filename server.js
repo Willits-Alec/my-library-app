@@ -3,8 +3,6 @@ const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const bookRoutes = require('./routes/books');
-const movieRoutes = require('./routes/movies');
 const swaggerDocument = require('./swagger.json');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
@@ -12,6 +10,9 @@ const session = require('express-session');
 
 // Load environment variables from .env file
 dotenv.config();
+
+const bookRoutes = require('./routes/books');
+const movieRoutes = require('./routes/movies');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,10 +22,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected...'))
   .catch(err => console.error('MongoDB connection error:', err));
 
