@@ -44,18 +44,16 @@ passport.use(new GitHubStrategy({
     callbackURL: process.env.CALLBACK_URL
   },
   (accessToken, refreshToken, profile, done) => {
-    // Authentication callback logic
-    // Here you can save the profile information to your database if needed
     return done(null, profile);
   }
 ));
 
-// Serialize user into the session
+// Serialize 
 passport.serializeUser((user, done) => {
   done(null, user);
 });
 
-// Deserialize user from the session
+// Deserialize 
 passport.deserializeUser((obj, done) => {
   done(null, obj);
 });
@@ -65,7 +63,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
 app.use('/api/books', bookRoutes);
-app.use('/api/movies', movieRoutes); // New movie routes
+app.use('/api/movies', movieRoutes);
 
 // GitHub OAuth routes
 app.get('/auth/github',
@@ -74,7 +72,7 @@ app.get('/auth/github',
 app.get('/github/callback',
   passport.authenticate('github', { failureRedirect: '/' }),
   (req, res) => {
-    // Successful authentication, redirect to dashboard or perform other actions
+    // Successful authentication
     res.redirect('/dashboard');
   });
 
@@ -82,7 +80,7 @@ app.get('/github/callback',
 app.get('/dashboard', (req, res) => {
   if (req.isAuthenticated()) {
     // Access user information from req.user
-    const username = req.user.username; // Assuming 'username' is part of the user profile
+    const username = req.user.username;
     
     res.send(`Welcome to the dashboard, ${username}!`);
   } else {
@@ -92,8 +90,8 @@ app.get('/dashboard', (req, res) => {
 
 // Logout route
 app.get('/logout', (req, res) => {
-  req.logout(); // Passport.js method to clear the login session
-  res.redirect('/'); // Redirect to home page or login page
+  req.logout(); 
+  res.redirect('/');
 });
 
 // Start server
