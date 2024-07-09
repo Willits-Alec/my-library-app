@@ -3,26 +3,48 @@ const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const swaggerDocument = require('./swagger.json');
+const swaggerDocument = require('./swagger-output.json');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
 const session = require('express-session');
+const cors = require('cors');
 
 // Load environment variables from .env file
 dotenv.config();
 
-const bookRoutes = require('./routes/books');
-const movieRoutes = require('./routes/movies');
+const routes = require('./routes/routes'); // Import central routes file
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(cors());
 
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-with, Content-Type, Accept, Z-Key'
+  );
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  next();
+});
+
+// Use Swagger-UI-express for your app documentation endpoint
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+const mongoURI = process.env.MONGO_URI;
+
+if (!mongoURI) {
+  console.error("Error: MONGO_URI environment variable is not defined.");
+  process.exit(1);
+}
+
 // MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(mongoURI)
   .then(() => console.log('MongoDB connected...'))
   .catch(err => console.error('MongoDB connection error:', err));
 
@@ -48,22 +70,18 @@ passport.use(new GitHubStrategy({
   }
 ));
 
-// Serialize 
+// Serialize user into the session
 passport.serializeUser((user, done) => {
   done(null, user);
 });
 
-// Deserialize 
+// Deserialize user from the session
 passport.deserializeUser((obj, done) => {
   done(null, obj);
 });
 
-// Swagger setup
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 // Routes
-app.use('/api/books', bookRoutes);
-app.use('/api/movies', movieRoutes);
+app.use('/api', routes); // Use the central routes file
 
 // GitHub OAuth routes
 app.get('/auth/github',
@@ -81,7 +99,7 @@ app.get('/dashboard', (req, res) => {
   if (req.isAuthenticated()) {
     // Access user information from req.user
     const username = req.user.username;
-    
+
     res.send(`Welcome to the dashboard, ${username}!`);
   } else {
     res.redirect('/');
@@ -90,7 +108,7 @@ app.get('/dashboard', (req, res) => {
 
 // Logout route
 app.get('/logout', (req, res) => {
-  req.logout(); 
+  req.logout();
   res.redirect('/');
 });
 

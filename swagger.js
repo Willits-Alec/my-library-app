@@ -1,24 +1,16 @@
-const swaggerJsdoc = require('swagger-jsdoc');
-const path = require('path');
+// swagger.js
+const swaggerAutogen = require('swagger-autogen')();
 
-const options = {
-  swaggerDefinition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Your API Documentation',
-      version: '1.0.0',
-      description: 'Documentation for your API endpoints',
-    },
-    servers: [
-      {
-        url: 'http://localhost:3000',
-        description: 'Development server',
-      },
-    ],
+const doc = {
+  info: {
+    title: 'My API',
+    description: 'API documentation',
   },
-  apis: [path.resolve(__dirname, './routes/*.js')], // Path to your API route files
+  host: 'localhost:3000',
+  schemes: ['http', 'https'],
 };
 
-const specs = swaggerJsdoc(options);
+const outputFile = './swagger-output.json';
+const endpointsFiles = ['./server.js', './routes/routes.js'];
 
-module.exports = specs;
+swaggerAutogen(outputFile, endpointsFiles, doc);
