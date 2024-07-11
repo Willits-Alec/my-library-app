@@ -69,7 +69,7 @@ app.use('/api/movies', movieRoutes);
 app.get('/', (req, res) => {
   res.send(`
     <h1>Welcome to My Library App</h1>
-    <p><a href="/auth/github">Log in with GitHub</a></p>
+    <p><a href="https://my-library-app-hrg3.onrender.com/auth/github">Log in with GitHub</a></p>
   `);
 });
 
@@ -92,7 +92,7 @@ app.get('/dashboard', (req, res) => {
     
     res.send(`
       <h1>Welcome to the dashboard, ${username}!</h1>
-      <p><a href="/logout">Logout of GitHub</a></p>
+      <p><a href="https://my-library-app-hrg3.onrender.com/logout">Logout of GitHub</a></p>
       `);
   } else {
     res.redirect('/');
