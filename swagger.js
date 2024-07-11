@@ -1,16 +1,17 @@
-// swagger.js
 const swaggerAutogen = require('swagger-autogen')();
 
 const doc = {
   info: {
-    title: 'My API',
-    description: 'API documentation',
+    title: 'Library API',
+    description: 'A simple Express Library API',
   },
   host: 'localhost:3000',
-  schemes: ['http', 'https'],
+  schemes: ['http'],
 };
 
 const outputFile = './swagger-output.json';
-const endpointsFiles = ['./server.js', './routes/routes.js'];
+const endpointsFiles = ['./server.js']; // Adjust according to your main server file
 
-swaggerAutogen(outputFile, endpointsFiles, doc);
+swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
+  require('./server.js'); // Start the server after generating the Swagger documentation
+});
