@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const swaggerDocument = require('./swagger.json');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
 const session = require('express-session');
+const swaggerDocument = require('./swagger-output.json'); // Use generated Swagger document
 
 // Load environment variables from .env file
 dotenv.config();
@@ -65,6 +65,14 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/books', bookRoutes);
 app.use('/api/movies', movieRoutes);
 
+// Home route
+app.get('/', (req, res) => {
+  res.send(`
+    <h1>Welcome to My Library App</h1>
+    <p><a href="/auth/github">Log in with GitHub</a></p>
+  `);
+});
+
 // GitHub OAuth routes
 app.get('/auth/github',
   passport.authenticate('github'));
@@ -82,17 +90,23 @@ app.get('/dashboard', (req, res) => {
     // Access user information from req.user
     const username = req.user.username;
     
-    res.send(`Welcome to the dashboard, ${username}!`);
+    res.send(`
+      <h1>Welcome to the dashboard, ${username}!</h1>
+      <p><a href="/logout">Logout of GitHub</a></p>
+      `);
   } else {
     res.redirect('/');
   }
 });
 
 // Logout route
-app.get('/logout', (req, res) => {
-  req.logout(); 
-  res.redirect('/');
+app.get('/logout', (req, res, next) => {
+  req.logout((err) => {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
 });
+
 
 // Start server
 app.listen(PORT, () => {
